@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: page.metaTitle,
       description: page.metaDescription,
-      url: `https://wishmaker.sbs/wishes/${page.slug}`,
+      url: `https://www.wishmaker.sbs/wishes/${page.slug}`,
       type: 'article',
     },
   };

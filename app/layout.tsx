@@ -7,16 +7,25 @@ import Script from 'next/script';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://wishmaker.sbs'),
+  // Site is served on www; use the same everywhere to avoid canonical mismatches
+  metadataBase: new URL('https://www.wishmaker.sbs'),
   title: {
     default: 'WishMaker - Create Digital Birthday & Anniversary Surprise Gifts',
     template: '%s | WishMaker',
   },
   description:
     'Create beautiful personalized digital birthday and anniversary surprise gifts in minutes. Add your photos, message and wishes - they open a page made just for them.',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    url: 'https://wishmaker.sbs',
+    url: 'https://www.wishmaker.sbs',
     siteName: 'WishMaker',
+    images: [{ url: '/icon.png', width: 500, height: 500, alt: 'WishMaker' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/icon.png'],
   },
 };
 

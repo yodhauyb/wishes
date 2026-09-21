@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { WISH_PAGES } from '@/lib/wishes-data';
 
-const BASE = 'https://wishmaker.sbs';
+const BASE = 'https://www.wishmaker.sbs';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

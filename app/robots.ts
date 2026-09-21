@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/birthday/'],
     },
-    sitemap: 'https://wishmaker.sbs/sitemap.xml',
+    sitemap: 'https://www.wishmaker.sbs/sitemap.xml',
   };
 }
