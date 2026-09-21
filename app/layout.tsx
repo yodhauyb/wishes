@@ -7,10 +7,16 @@ import Script from 'next/script';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'YODHAAI Surprises - Magical Digital Gifts',
-  description: 'Create aesthetic and personalized digital gifts in minutes.',
+  metadataBase: new URL('https://wishmaker.sbs'),
+  title: {
+    default: 'WishMaker - Create Digital Birthday & Anniversary Surprise Gifts',
+    template: '%s | WishMaker',
+  },
+  description:
+    'Create beautiful personalized digital birthday and anniversary surprise gifts in minutes. Add your photos, message and wishes - they open a page made just for them.',
   openGraph: {
     url: 'https://wishmaker.sbs',
+    siteName: 'WishMaker',
   },
 };
 
