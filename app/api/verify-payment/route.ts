@@ -2,18 +2,36 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 
 export async function POST(req: Request) {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await req.json();
-  const secret = process.env.RAZORPAY_KEY_SECRET!;
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await req.json();
 
-  // HMAC SHA256 signature verify karne ka formula
-  const generated_signature = crypto
-    .createHmac('sha256', secret)
-    .update(razorpay_order_id + '|' + razorpay_payment_id)
-    .digest('hex');
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return NextResponse.json(
+        { success: false, error: 'Missing payment verification details' },
+        { status: 400 }
+      );
+    }
 
-  if (generated_signature === razorpay_signature) {
-    return NextResponse.json({ success: true });
-  } else {
-    return NextResponse.json({ success: false }, { status: 400 });
+    const body = razorpay_order_id + '|' + razorpay_payment_id;
+
+    const expectedSignature = crypto
+      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
+      .update(body.toString())
+      .digest('hex');
+
+    if (expectedSignature === razorpay_signature) {
+      return NextResponse.json({ success: true, message: 'Payment verified successfully' });
+    } else {
+      return NextResponse.json(
+        { success: false, error: 'Invalid signature mismatch' },
+        { status: 400 }
+      );
+    }
+  } catch (error: any) {
+    console.error('Razorpay Verification Error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }

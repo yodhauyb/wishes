@@ -158,10 +158,8 @@ export const BirthdayForm: React.FC = () => {
     const slug = `${formattedName}-${Math.floor(1000 + Math.random() * 9000)}`;
     const finalData: BirthdayData = { ...getCurrentData(), id: `birthday-${Date.now()}`, slug };
     
-    // Save to Cloud Storage
     await saveBirthday(finalData);
 
-    // INCREASE COUNT IN DATABASE
     await supabase
       .from('user_profiles')
       .update({ surprises_created: (userProfile?.surprises_created || 0) + 1 })
@@ -172,11 +170,9 @@ export const BirthdayForm: React.FC = () => {
     setActiveStep(7); 
   };
 
-  // 👇 NAYA RAZORPAY PAYMENT LOGIC 👇
-  // 👇 UPDATED RAZORPAY PAYMENT LOGIC 👇
+  // RAZORPAY PAYMENT LOGIC
   const handlePayment = async () => {
     try {
-      // 0. Razorpay script load karein
       const loadScript = () => {
         return new Promise((resolve) => {
           if ((window as any).Razorpay) {
@@ -197,7 +193,6 @@ export const BirthdayForm: React.FC = () => {
         return;
       }
 
-      // 1. Backend API se Order ID mangwaayein
       const res = await fetch('/api/create-order', { method: 'POST' });
       const data = await res.json();
       
@@ -207,16 +202,14 @@ export const BirthdayForm: React.FC = () => {
          return;
       }
 
-      // 2. Razorpay popup options
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
-        amount: 4900, // Number (4900 paise = ₹49)
+        amount: 4900, 
         currency: "INR",
         name: "YODHAAI Pro",
         description: "1 Year Unlimited Surprises",
-        order_id: data.orderId, // Backend response se orderId le rahe hain
+        order_id: data.orderId,
         handler: async function (response: any) {
-          // 3. Payment verify karo
           const verifyRes = await fetch('/api/verify-payment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -225,7 +218,6 @@ export const BirthdayForm: React.FC = () => {
           const verifyData = await verifyRes.json();
           
           if (verifyData.success) {
-            // 4. Supabase mein Premium update karein
             await supabase
               .from('user_profiles')
               .update({ is_premium: true })
@@ -248,8 +240,6 @@ export const BirthdayForm: React.FC = () => {
       alert("Something went wrong loading payment gateway.");
     }
   };
-  // 👆 NAYA RAZORPAY PAYMENT LOGIC 👆
-
 
   // 🚪 3. THE GATEKEEPER LOGIC
   if (isAuthLoading) {
@@ -268,15 +258,22 @@ export const BirthdayForm: React.FC = () => {
     );
   }
 
-  // 👑 BOSS MODE & PAYWALL LOGIC
+  // 👑 BOSS & TRIAL LOGIC
   const isBoss = user.email === adminEmail;
   const isPremium = userProfile?.is_premium;
-  const hasUsedFreeTrial = userProfile?.surprises_created >= 1;
+  
+  // 👇 3-DAY TRIAL LOGIC 👇
+  const signupDate = new Date(userProfile?.created_at || Date.now());
+  const currentDate = new Date();
+  const diffInDays = (currentDate.getTime() - signupDate.getTime()) / (1000 * 3600 * 24);
+  const isTrialActive = diffInDays <= 3;
+  const trialDaysLeft = Math.max(0, Math.ceil(3 - diffInDays));
+  // 👆 3-DAY TRIAL LOGIC 👆
 
-  if (!isBoss && !isPremium && hasUsedFreeTrial) {
+  // Agar Boss nahi hai, Premium nahi hai, AUR Trial bhi khatam ho gaya -> Paywall dikhao
+  if (!isBoss && !isPremium && !isTrialActive) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 w-full">
-        {/* YAHAN SCRIPT TAG ADD KIYA HAI */}
         <Script src="https://checkout.razorpay.com/v1/checkout.js" />
         
         <div className="bg-gradient-to-br from-pink-500 to-rose-500 p-1 rounded-3xl shadow-2xl max-w-md w-full">
@@ -286,21 +283,35 @@ export const BirthdayForm: React.FC = () => {
                 <Sparkles size={40} />
               </div>
             </div>
-            <h2 className="text-3xl font-black text-zinc-900 dark:text-white">Unlock YODHAAI Pro</h2>
+            <h2 className="text-3xl font-black text-zinc-900 dark:text-white">Trial Expired 🥺</h2>
             <p className="text-zinc-600 dark:text-zinc-400 text-sm">
-              You've successfully created your first magical surprise! ✨ Upgrade to Premium to craft unlimited digital surprises for an entire year.
+              Your 3-day free VIP trial has ended! Upgrade to YODHAAI Pro to continue crafting unlimited magical surprises.
             </p>
-            <div className="py-4">
-              <span className="text-5xl font-black text-zinc-900 dark:text-white">₹49</span>
-              <span className="text-zinc-500 font-medium"> / year</span>
-            </div>
             
-            {/* YAHAN ONCLICK ADD KIYA HAI */}
+            {/* 👇 FOMO BANNER START 👇 */}
+            <div className="mb-6 mt-4 text-center p-5 border border-pink-500/30 rounded-2xl bg-gradient-to-b from-pink-500/10 to-transparent backdrop-blur-sm">
+              <div className="inline-flex items-center gap-2 px-3 py-1 mb-3 text-xs font-semibold text-pink-600 dark:text-pink-400 bg-pink-500/10 rounded-full border border-pink-500/20">
+                <span className="animate-pulse">🔥</span> Limited Time Offer
+              </div>
+              
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <span className="text-zinc-400 dark:text-zinc-500 line-through text-lg font-medium">₹199</span>
+                <span className="text-pink-500 font-black text-5xl drop-shadow-sm">
+                  ₹49<span className="text-lg font-medium text-pink-400">/yr</span>
+                </span>
+              </div>
+              
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center justify-center gap-1 font-medium mt-3">
+                <span>✨</span> Trusted by 500+ happy users <span>✨</span>
+              </p>
+            </div>
+            {/* 👆 FOMO BANNER END 👆 */}
+            
             <button 
               onClick={handlePayment} 
               className="w-full py-4 bg-zinc-900 dark:bg-white text-white dark:text-black font-black rounded-xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all"
             >
-              Upgrade Now (₹49)
+              Unlock Pro Now (₹49)
             </button>
             
             <p className="text-xs text-zinc-400 mt-4">Secure payment powered by Razorpay</p>
@@ -333,6 +344,13 @@ export const BirthdayForm: React.FC = () => {
         {isBoss && (
           <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 text-amber-600 dark:text-amber-400 p-3 rounded-2xl flex items-center justify-center gap-2 text-xs font-bold font-mono shadow-sm">
             👑 BOSS MODE ACTIVE - YOU HAVE UNLIMITED FREE ACCESS
+          </div>
+        )}
+
+        {/* 🔥 TRIAL BADGE HIGHLIGHT */}
+        {!isBoss && !isPremium && isTrialActive && (
+          <div className="bg-gradient-to-r from-pink-500/10 to-rose-500/10 border border-pink-500/30 text-pink-600 dark:text-pink-400 p-3 rounded-2xl flex items-center justify-center gap-2 text-xs font-bold shadow-sm">
+            ⏳ PRO TRIAL ACTIVE: {trialDaysLeft} Days Left! Create unlimited surprises.
           </div>
         )}
         

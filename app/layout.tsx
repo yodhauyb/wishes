@@ -1,29 +1,50 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google'; // ✨ Google Font Import kiya
+import './globals.css';
+import Script from 'next/script'; 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// ✨ Local font ki jagah direct Inter font setup
+const inter = Inter({ subsets: ['latin'] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+export const metadata: Metadata = {
+  title: 'YODHAAI Surprises - Magical Digital Gifts',
+  description: 'Create aesthetic and personalized digital gifts in minutes.',
+  openGraph: {
+    url: 'https://wishmaker.sbs',
+  },
+};
 
-export const metadata = {
-  title: 'YODHAAI Surprises',
-  description: 'Craft premium digital surprises for your loved ones.',
-}
-
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    // ✨ Yahan inter.className laga diya
+    <html lang="en" className={`${inter.className} h-full antialiased`}>
+      <body className="min-h-full flex flex-col">
+        
+        {/* 👇 GOOGLE ANALYTICS PROPER NEXT.JS INTEGRATION 👇 */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=G-9NQKY0SM0Z`}
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-9NQKY0SM0Z');
+            `,
+          }}
+        />
+        {/* 👆 GOOGLE ANALYTICS END 👆 */}
+
+        {children}
+      </body>
     </html>
   );
 }
