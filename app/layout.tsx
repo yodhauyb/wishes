@@ -37,6 +37,11 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     images: ['/og.png'],
   },
+  other: {
+    // Pinterest website claim (Settings > Claimed accounts). Renders
+    // <meta name="p:domain_verify" content="..."/> in <head>.
+    'p:domain_verify': '11c8fd8956345c1bda1c98d6a23a1062',
+  },
 };
 
 export default function RootLayout({
