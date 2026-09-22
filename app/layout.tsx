@@ -21,11 +21,21 @@ export const metadata: Metadata = {
   openGraph: {
     url: 'https://www.wishmaker.sbs',
     siteName: 'WishMaker',
-    images: [{ url: '/icon.png', width: 500, height: 500, alt: 'WishMaker' }],
+    type: 'website',
+    // 1200x630 is the 1.91:1 ratio WhatsApp/Twitter need for a large preview.
+    // A square image silently downgrades to a small thumbnail.
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'WishMaker - a gift they open on their phone',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['/icon.png'],
+    images: ['/og.png'],
   },
 };
 
