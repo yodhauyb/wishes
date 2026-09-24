@@ -30,7 +30,7 @@ export default function CreateSurprisePage() {
               <span>Back to home</span>
             </Link>
             
-            {/* 🌟 YODHAAI Premium Logo (Yahan lagaya hai perfectly) */}
+            {/* 🌟 WishMaker Logo (Yahan lagaya hai perfectly) */}
             <div className="mb-6">
               <Logo />
             </div>
@@ -47,7 +47,7 @@ export default function CreateSurprisePage() {
           {/* ✅ Status ab "Live on Cloud" ho gaya hai */}
           <div className="flex items-center gap-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-4 py-2 rounded-2xl border border-emerald-500/20 shadow-xs mt-2 sm:mt-0">
             <Cloud size={16} />
-            <span>Live on YODHAAI Cloud</span>
+            <span>Live on WishMaker Cloud</span>
           </div>
         </header>
 

@@ -69,7 +69,7 @@ export const BirthdayExperience: React.FC<BirthdayExperienceProps> = ({ data }) 
       {/* Bottom Branding */}
       <div className="py-3 text-center z-10">
         <span className="text-[10px] text-white/40 tracking-widest uppercase font-semibold">
-          Made with ❤️ by YODHAAI
+          Made with ❤️ by WishMaker
         </span>
       </div>
     </main>

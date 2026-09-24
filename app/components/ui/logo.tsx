@@ -15,7 +15,7 @@ export const Logo = () => {
       {/* ✨ Aesthetic Brand Text */}
       <div className="flex flex-col justify-center">
         <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-white leading-none">
-          YODHAAI
+          WishMaker
         </span>
         <span className="text-[10px] font-bold text-pink-500 tracking-[0.2em] uppercase mt-0.5">
           Surprises

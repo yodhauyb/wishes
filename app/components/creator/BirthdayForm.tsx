@@ -206,7 +206,7 @@ export const BirthdayForm: React.FC = () => {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
         amount: 4900, 
         currency: "INR",
-        name: "YODHAAI Pro",
+        name: "WishMaker Pro",
         description: "1 Year Unlimited Surprises",
         order_id: data.orderId,
         handler: async function (response: any) {
@@ -245,7 +245,7 @@ export const BirthdayForm: React.FC = () => {
   if (isAuthLoading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <p className="animate-pulse text-xl font-bold text-pink-500">Loading YODHAAI Magic... ✨</p>
+        <p className="animate-pulse text-xl font-bold text-pink-500">Loading WishMaker Magic... ✨</p>
       </div>
     );
   }
@@ -285,7 +285,7 @@ export const BirthdayForm: React.FC = () => {
             </div>
             <h2 className="text-3xl font-black text-zinc-900 dark:text-white">Trial Expired 🥺</h2>
             <p className="text-zinc-600 dark:text-zinc-400 text-sm">
-              Your 3-day free VIP trial has ended! Upgrade to YODHAAI Pro to continue crafting unlimited magical surprises.
+              Your 3-day free VIP trial has ended! Upgrade to WishMaker Pro to continue crafting unlimited magical surprises.
             </p>
             
             {/* 👇 FOMO BANNER START 👇 */}

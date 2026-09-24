@@ -33,7 +33,7 @@ export default function HomePage() {
       <nav className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
         <div className="flex items-center gap-2 font-black text-xl tracking-tight">
           <Gift className="text-pink-500" />
-          <span>QR<span className="text-pink-500">SURPRISE</span></span>
+          <span>Wish<span className="text-pink-500">Maker</span></span>
         </div>
         <div className="flex items-center gap-6">
           <Link href="#demos" className="text-sm font-bold text-zinc-400 hover:text-white transition-colors">

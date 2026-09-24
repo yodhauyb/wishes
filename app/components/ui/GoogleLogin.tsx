@@ -18,7 +18,7 @@ export const GoogleLogin = () => {
   return (
     <div className="flex flex-col items-center justify-center space-y-4 p-8 text-center bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl">
       <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-        Welcome to YODHAAI Surprises ✨
+        Welcome to WishMaker ✨
       </h2>
       <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
         Sign in securely to craft your magical digital experience.
